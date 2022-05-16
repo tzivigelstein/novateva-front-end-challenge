@@ -1,0 +1,9 @@
+.sideBar {
+  height: 100%;
+  border-right: 2px solid var(--secondary-border-color);
+  padding-top: 2rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

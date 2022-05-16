@@ -1,0 +1,19 @@
+.chatIdentifier {
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  border-radius: 0 100rem 100rem 0;
+  padding: 1rem;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.identifier {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.identifierName {
+  color: #fff;
+}

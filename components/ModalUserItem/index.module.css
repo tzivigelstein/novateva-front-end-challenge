@@ -1,0 +1,43 @@
+.userItemButton {
+  padding: 1rem;
+  cursor: pointer;
+  border: 2px solid var(--primary-border-color);
+  display: flex;
+  border-radius: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: transparent;
+  transition: 150ms ease-in-out border-color;
+}
+
+.userItemButton[aria-selected='true'] {
+  border-color: var(--dark-main-color);
+}
+
+@media (hover) {
+  .userItemButton:hover {
+    border-color: var(--main-color);
+  }
+
+  .userItemButton:hover .userSelectButtonIcon {
+    stroke: var(--main-color);
+  }
+}
+
+.userSelectButton {
+  border: none;
+  outline: none;
+  padding: 0;
+  display: flex;
+  background-color: transparent;
+}
+
+.userSelectButtonIcon {
+  stroke: #858585;
+  transition: 150ms ease-in-out stroke;
+}
+
+.userSelectedButtonIcon {
+  stroke: var(--dark-main-color);
+}

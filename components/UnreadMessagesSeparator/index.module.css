@@ -1,0 +1,19 @@
+.unreadMessagesContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+.unread {
+  font-size: 14px;
+  color: var(--main-color);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background-color: var(--main-color);
+}

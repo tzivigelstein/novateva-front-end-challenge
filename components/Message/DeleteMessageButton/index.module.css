@@ -1,0 +1,22 @@
+.deleteMessageButton {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 0.3rem;
+  padding: 0.4rem 0.3rem;
+  font-weight: bold;
+  transition: 100ms ease-in-out background-color, 100ms ease-in-out color;
+}
+
+@media (hover) {
+  .deleteMessageButton:hover {
+    background-color: var(--red-color);
+    color: #fff;
+  }
+}

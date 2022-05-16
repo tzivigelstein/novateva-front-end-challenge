@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 4rem 0;
+}
+
+.form {
+  display: grid;
+  place-items: center;
+  gap: 0.7rem;
+}
+
+.fieldset {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: grid;
+  gap: 1rem;
+}
+
+.horizontalFieldset {
+  display: flex;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 100rem;
+  border: 2px solid #ccc;
+  outline: none;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: black;
+}
+
+.submit {
+  background: var(--gradient);
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 100rem;
+}
+
+.submit:focus {
+  outline: 2px black double;
+  outline-offset: 2px;
+}
+
+.submit:disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.helperLink {
+  color: var(--primary-text-color);
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.helperLink:visited {
+  color: darkmagenta;
+}

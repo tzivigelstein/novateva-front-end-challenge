@@ -1,0 +1,27 @@
+.status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reportsButton {
+  gap: 0.5rem;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  align-items: center;
+  transition: 200ms ease-in-out color, 200ms ease-in-out background-color;
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+@media (hover) {
+  .reportsButton:hover {
+    background-color: rgb(50, 173, 230);
+    color: #fff;
+  }
+}

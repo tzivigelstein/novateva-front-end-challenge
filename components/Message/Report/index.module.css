@@ -1,0 +1,27 @@
+.reportContainer {
+  width: max-content;
+  max-width: 400px;
+  overflow-y: scroll;
+  padding: 1rem;
+  padding-right: 0;
+}
+
+.screenshot {
+  width: 100%;
+  border: 2px dashed #ccc;
+  border-radius: 1rem;
+}
+
+.reportOptionsList {
+  list-style: none;
+  padding: 1rem 0;
+  color: var(--primary-text-color);
+  font-size: 0.9rem;
+  gap: 1rem;
+  display: grid;
+}
+
+.bold {
+  font-weight: bold;
+  margin-right: 0.75ch;
+}

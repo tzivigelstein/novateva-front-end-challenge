@@ -1,0 +1,7 @@
+.inputHelper {
+  padding-left: 0.5rem;
+  font-size: 13px;
+  font-weight: bold;
+  min-height: 2ch;
+  color: var(--warning-color);
+}

@@ -1,0 +1,27 @@
+.pictureContainer {
+  position: relative;
+  display: flex;
+}
+
+.picture {
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status {
+  position: absolute;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  width: 0.6rem;
+  background-color: var(--success-color);
+  bottom: 0;
+  right: 0;
+}

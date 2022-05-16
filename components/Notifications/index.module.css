@@ -1,0 +1,13 @@
+.notifications {
+  outline: none;
+  display: flex;
+  background-color: transparent;
+  position: relative;
+  border: none;
+}
+
+.notificationsCountContainer {
+  position: absolute;
+  bottom: -0.2rem;
+  right: -0.2rem;
+}

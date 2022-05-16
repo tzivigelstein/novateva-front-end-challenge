@@ -1,0 +1,9 @@
+.chatContainer {
+  border-radius: 1rem;
+  border: 2px solid var(--secondary-border-color);
+  margin: 1.5rem;
+  display: grid;
+  grid-template-columns: 300px auto;
+  overflow: hidden;
+  flex: 1;
+}

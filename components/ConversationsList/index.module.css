@@ -1,0 +1,44 @@
+.aside {
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid var(--primary-border-color);
+  justify-content: space-between;
+}
+
+.chatsContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.chatAsideHeader {
+  padding: 1rem;
+  border-bottom: 2px solid var(--primary-border-color);
+}
+
+.chatsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.noChatsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.newChatButton {
+  background: var(--gradient);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  width: 66%;
+  margin: 2rem auto;
+  border-radius: 100rem;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}

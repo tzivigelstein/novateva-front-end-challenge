@@ -1,0 +1,17 @@
+.notificationsCountContainer {
+  display: flex;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  width: max-content;
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+}
+
+.notificationsCount {
+  font-weight: 700;
+  font-size: 9px;
+  color: #000;
+  display: block;
+}

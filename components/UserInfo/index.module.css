@@ -1,0 +1,17 @@
+.userInfoContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.status {
+  color: var(--primary-text-color);
+  font-size: 10px;
+  text-align: left;
+}

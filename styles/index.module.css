@@ -1,0 +1,12 @@
+.main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  flex: 1;
+  overflow: hidden;
+}

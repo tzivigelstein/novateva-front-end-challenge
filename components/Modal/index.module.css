@@ -1,0 +1,82 @@
+.modalBackground {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 1rem;
+  border: none;
+  min-width: 400px;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem;
+  aspect-ratio: 1.5 / 2;
+}
+
+.closeModalButton {
+  display: flex;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.body {
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.successButton,
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  width: 100%;
+  border-radius: 1rem;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: 150ms ease-in-out filter;
+  cursor: pointer;
+  height: max-content;
+}
+
+.successButton {
+  background: var(--gradient);
+  color: #fff;
+}
+
+@media (hover) {
+  .successButton:hover,
+  .cancelButton:hover {
+    filter: brightness(0.9);
+  }
+}
+
+.successButton:disabled {
+  filter: grayscale(1);
+  cursor: not-allowed;
+}

@@ -1,10 +1,13 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
+//  Meta tag added to avoid mixed requests between HTTPS and HTTP protocls
+
 class MyDocument extends Document {
   render() {
     return (
       <Html>
         <Head>
+          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
           <link

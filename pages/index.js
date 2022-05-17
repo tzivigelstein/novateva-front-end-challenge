@@ -6,17 +6,15 @@ import useAuth from '../hooks/useAuth'
 import { useRouter } from 'next/router'
 import SideBar from '../components/SideBar'
 import Chat from '../components/Chat'
-import useApp from '../hooks/useApp'
 
 export default function Home() {
-  const { isAuth, loading } = useAuth()
-  const { getRoomMessages } = useApp()
+  const { isAuth } = useAuth()
 
   const router = useRouter()
 
   useEffect(() => {
-    if (!isAuth && !loading) router.replace('/login')
-  }, [loading])
+    if (!isAuth) router.replace('/login')
+  }, [])
 
   if (!isAuth) return <p>Not authenticated...</p>
 

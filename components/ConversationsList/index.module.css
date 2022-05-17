@@ -3,13 +3,15 @@
   flex-direction: column;
   border-right: 2px solid var(--primary-border-color);
   justify-content: space-between;
+  overflow: hidden;
+  height: 100%;
+  gap: 1rem;
 }
 
 .chatsContainer {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .chatAsideHeader {
@@ -21,6 +23,8 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow-y: scroll;
+  flex: 1;
 }
 
 .noChatsContainer {
@@ -35,7 +39,8 @@
   border: none;
   padding: 0.75rem 1.5rem;
   width: 66%;
-  margin: 2rem auto;
+  margin: 0 auto;
+  margin-bottom: 1rem;
   border-radius: 100rem;
   color: #fff;
   font-weight: 600;

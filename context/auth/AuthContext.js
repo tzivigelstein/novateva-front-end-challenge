@@ -6,22 +6,17 @@ export const AuthContext = createContext()
 
 export default function AuthProvider({ children }) {
   const [isAuth, setIsAuth] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [user, setUser] = useState(null)
 
   async function signup(userData) {
-    setLoading(true)
-    return axiosClient.post('/users', userData).finally(() => setLoading(false))
+    return axiosClient.post('/users', userData)
   }
 
   async function getUserData(userId) {
-    setLoading(true)
-    return axiosClient(`/users/${userId}`).finally(() => setLoading(false))
+    return axiosClient(`/users/${userId}`)
   }
 
   async function login(userData) {
-    setLoading(true)
-
     return axiosClient
       .post('/login', userData)
       .then(data => {
@@ -41,12 +36,9 @@ export default function AuthProvider({ children }) {
           return data
         })
       })
-      .finally(() => setLoading(false))
   }
 
   async function postSignupLogin(userData) {
-    setLoading(true)
-
     return axiosClient
       .post('/login', userData)
       .then(data => {
@@ -66,7 +58,6 @@ export default function AuthProvider({ children }) {
         setIsAuth(true)
         return data
       })
-      .finally(() => setLoading(false))
   }
 
   function logout() {
@@ -80,7 +71,6 @@ export default function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         isAuth,
-        loading,
         user,
         signup,
         login,

@@ -43,15 +43,16 @@ export default function ConversationsList() {
           <header className={styles.chatAsideHeader}>
             <UserInfo user={localUser} status={true} bold={true} />
           </header>
-          {!loading && chats.length > 0 && (
+          {!loading && chats.length > 0 ? (
             <ul className={styles.chatsList}>
               {chats.length > 0 && chats.map(chat => <ConversationItem key={chat._id} chat={chat} />)}
             </ul>
+          ) : (
+            <div className={styles.noChatsContainer}>
+              {loading && <ActivityIndicator color="#858585" />}
+              {!loading && chats.length === 0 && <p>No chats around here...</p>}
+            </div>
           )}
-          <div className={styles.noChatsContainer}>
-            {loading && <ActivityIndicator color="#858585" />}
-            {!loading && chats.length === 0 && <p>No chats around here...</p>}
-          </div>
         </div>
 
         <button className={styles.newChatButton} onClick={handleClick}>

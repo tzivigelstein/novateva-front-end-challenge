@@ -19,7 +19,7 @@ export default function AppProvider({ children }) {
   const [reports, setReports] = useState([])
   const [notifications, setNotifications] = useState([])
 
-  const SOCKET_URL = 'ws://novateva-codetest.herokuapp.com/'
+  const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL
 
   function connectToSocket(id) {
     const socket = io(SOCKET_URL, {

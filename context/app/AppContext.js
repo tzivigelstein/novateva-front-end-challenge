@@ -16,8 +16,8 @@ export default function AppProvider({ children }) {
   const [currentConversation, setCurrentConversation] = useState(null)
   const [openSockets, setOpenSockets] = useState([])
   const [activeMessage, setActiveMessage] = useState(null)
+  const [activeConversation, setActiveConversation] = useState(null)
   const [reports, setReports] = useState([])
-  const [notifications, setNotifications] = useState([])
 
   const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL
 
@@ -29,20 +29,21 @@ export default function AppProvider({ children }) {
     })
 
     socket.on('connect', () => {
-      console.log('Connected to', socket.id)
-
       setOpenSockets(prev => [...prev, socket])
     })
 
     socket.on('disconnect', () => {
-      console.log('Disconnecting')
+      console.info('Socket disconnected')
     })
 
     socket.on('new message', function ({ message }) {
-      if (currentConversation?._id === message.chatRoomId) {
-        console.log('updating current conver')
-        setCurrentConversation(prev => ({ ...prev, messages: [...prev.messages, message] }))
-      }
+      setCurrentConversation(prev => {
+        if (prev?._id === message.chatRoomId) {
+          return { ...prev, messages: [...prev.messages, message] }
+        } else {
+          return prev
+        }
+      })
 
       setChats(prev => {
         return prev.map(chat => {
@@ -62,23 +63,54 @@ export default function AppProvider({ children }) {
   }
 
   async function markAsRead(id) {
-    return axiosClient.put(`/room/${id}/mark-read`).then(() => {
-      setCurrentConversation(prev => ({
-        ...prev,
-        messages: prev.messages
-          .filter(message => message.readByRecipients.find(recipient => recipient.userId !== localUser._id))
-          .map(message => ({
-            ...message,
-            readByRecipients: [...message.readByRecipients, localUser._id]
-          }))
-      }))
+    return axiosClient.put(`/room/${id}/mark-read`).finally(() => {
+      const newConversation = getNewReadConversation(currentConversation)
+
+      setCurrentConversation(newConversation)
+      setChats(prev =>
+        prev.map(chat => {
+          if (chat._id === id) {
+            return { ...newConversation }
+          }
+
+          return chat
+        })
+      )
     })
+  }
+
+  function getNewReadConversation(conversation) {
+    const { messages } = conversation
+
+    const newMessages = messages.map(message => {
+      const flatReadByRecipients = message.readByRecipients.map(({ readByUserId }) => readByUserId)
+
+      const messageNotRead = !flatReadByRecipients.includes(localUser._id)
+
+      const newReadByRecipients = [...message.readByRecipients]
+
+      if (messageNotRead) {
+        newReadByRecipients.push({ readByUserId: localUser._id })
+      }
+
+      return {
+        ...message,
+        readByRecipients: [...newReadByRecipients]
+      }
+    })
+
+    const newConversation = {
+      ...conversation,
+      messages: [...newMessages]
+    }
+
+    return newConversation
   }
 
   async function getAllUsers() {
     return axiosClient.get('/users').then(data => {
       const { users } = data.data
-      setAllUsers(users)
+      setAllUsers(() => users.filter(user => user._id !== localUser._id))
 
       return data
     })
@@ -88,6 +120,8 @@ export default function AppProvider({ children }) {
     return axiosClient('/room').then(data => {
       const { conversation: conversations } = data.data
       setChats(conversations)
+
+      return data
     })
   }
 
@@ -151,6 +185,47 @@ export default function AppProvider({ children }) {
       .catch(console.error)
   }
 
+  function getUnreadMessagesCount(chat) {
+    if (typeof chat === 'undefined') return 0
+
+    const count = chat?.messages?.reduce((acc, message) => {
+      if (!message.readByRecipients.find(recipient => recipient.readByUserId === localUser._id)) {
+        return acc + 1
+      }
+
+      return acc
+    }, 0)
+
+    return count
+  }
+
+  function getAllUnreadNotifications() {
+    const totalCount = chats.reduce((acc, el) => {
+      const count = getUnreadMessagesCount(el)
+
+      return acc + count
+    }, 0)
+
+    return totalCount
+  }
+
+  async function deleteConversation(id) {
+    return axiosClient.delete(`/delete/room/${id}`).then(() => {
+      setChats(prev => prev.filter(chat => chat._id !== id))
+      setCurrentConversation(prev => {
+        if (prev && prev._id === id) {
+          return null
+        }
+
+        return prev
+      })
+    })
+  }
+
+  function updateActiveConversation(conversation) {
+    setActiveConversation(conversation)
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -163,6 +238,7 @@ export default function AppProvider({ children }) {
         openSockets,
         activeMessage,
         reports,
+        activeConversation,
         setSelectedUser,
         getRoomMessages,
         createNewChat,
@@ -174,7 +250,11 @@ export default function AppProvider({ children }) {
         deleteMessage,
         markAsRead,
         setNewActiveMessage,
-        getReports
+        getReports,
+        getUnreadMessagesCount,
+        getAllUnreadNotifications,
+        deleteConversation,
+        updateActiveConversation
       }}
     >
       {children}

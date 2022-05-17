@@ -5,13 +5,21 @@ import useAuth from '../../../hooks/useAuth'
 import NotificationsCount from '../../NotificationsCount'
 import UserInfo from '../../UserInfo'
 import { Trash } from '../../Icons'
+import Modal from '../../Modal'
 
 export default function ConversationItem({ chat }) {
   const { user: localUser } = useAuth()
-  const { setCurrentConversationId, connectToSocket } = useApp()
-  const [activeConversationItem, setActiveConversationItem] = useState(null)
+  const {
+    setCurrentConversationId,
+    connectToSocket,
+    getUnreadMessagesCount,
+    activeConversation,
+    updateActiveConversation,
+    deleteConversation
+  } = useApp()
 
   const count = useMemo(() => getUnreadMessagesCount(chat), [chat.messages])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const socket = connectToSocket(chat._id)
@@ -19,38 +27,59 @@ export default function ConversationItem({ chat }) {
     return () => socket.close()
   }, [])
 
-  function getUnreadMessagesCount(chat) {
-    if (typeof chat === 'undefined') return 0
-
-    return chat?.messages?.reduce((acc, message) => {
-      if (!message.readByRecipients.find(recipient => recipient.readByUserId === localUser._id)) {
-        return acc + 1
-      }
-
-      return acc
-    }, 0)
-  }
-
   function updateActiveConversationItem(e) {
     e.preventDefault()
-    setActiveConversationItem(chat)
+    updateActiveConversation(prev => {
+      return prev === chat ? null : chat
+    })
+  }
+
+  function handleDeleteConversation(e) {
+    e.stopPropagation()
+
+    setIsModalOpen(true)
+  }
+
+  function handleDeleteConversationSuccess() {
+    updateActiveConversation(null)
+    deleteConversation(chat._id)
+    setIsModalOpen(false)
+  }
+
+  function onInteraction() {
+    setIsModalOpen(false)
+    updateActiveConversation(null)
   }
 
   return (
-    <li key={chat._id}>
-      <button
-        onContextMenu={updateActiveConversationItem}
-        onClick={() => setCurrentConversationId(chat._id)}
-        className={styles.conversationItem}
-      >
-        <UserInfo user={chat.users.find(user => user._id !== localUser._id)} status={true} bold={true} />
-        {count > 0 && !activeConversationItem && <NotificationsCount number={count} />}
-        {activeConversationItem && activeConversationItem._id === chat._id && (
-          <button className={styles.deleteConversationButton}>
-            <Trash />
-          </button>
-        )}
-      </button>
-    </li>
+    <>
+      <li key={chat._id}>
+        <button
+          onContextMenu={updateActiveConversationItem}
+          onClick={() => setCurrentConversationId(chat._id)}
+          className={styles.conversationItem}
+        >
+          <UserInfo user={chat.users.find(user => user._id !== localUser._id)} status={true} bold={true} />
+          {count > 0 && activeConversation?._id !== chat._id && <NotificationsCount number={count} />}
+          {activeConversation && activeConversation._id === chat._id && (
+            // role assigned to avoid: "Button cannot appear as a descendant of button"
+            <div onClick={handleDeleteConversation} role="button" className={styles.deleteConversationButton} value="">
+              <Trash />
+            </div>
+          )}
+        </button>
+      </li>
+      {isModalOpen && (
+        <Modal
+          title="Delete conversation"
+          subtitle="This action is not reversible"
+          successButtonText="Delete"
+          cancelButtonText="Cancel"
+          onSuccess={handleDeleteConversationSuccess}
+          onCancel={onInteraction}
+          onClose={onInteraction}
+        />
+      )}
+    </>
   )
 }

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState, forwardRef, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import styles from './index.module.css'
 import useApp from '../../hooks/useApp'
 import useAuth from '../../hooks/useAuth'
@@ -10,61 +10,39 @@ import Modal from '../Modal'
 import { useScreenshot } from 'use-react-screenshot'
 import Report from './Report'
 import useMessages from '../../hooks/useMessages'
+import { getTimeAgo } from './utils'
+import UnreadMessagesSeparator from '../UnreadMessagesSeparator'
 
-const Message = forwardRef(({ message }, ref) => {
+export default function Message({ message, firstUnreadMessage, lastMessage }) {
   const [deleteMessageControl, setDeleteMessageControl] = useState(false)
   const [reportMessageControl, setReportMessageControl] = useState(false)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const currentMessageRef = useRef()
+  const messageRef = useRef()
   const [image, takeImage] = useScreenshot()
-  const getImage = () => takeImage(ref?.current || currentMessageRef?.current)
+  const getImage = () => takeImage(messageRef.current)
 
   const { user: localUser } = useAuth()
   const { selectedReportOption, updateCurrentReportingMessage, reportMessage, reportDescription, resetReport } =
     useMessages()
-  const { currentConversation, activeMessage, setNewActiveMessage, deleteMessage } = useApp()
-  const { createdAt, message: post } = message
+  const { currentConversation, activeMessage, setNewActiveMessage, deleteMessage, markAsRead } = useApp()
 
+  const { createdAt, message: post } = message
   const { messageText } = post
 
   const timestamp = new Date(createdAt).getTime()
-
-  const getTimeAgo = timestamp => {
-    const DATE_UNITS = {
-      day: 86400,
-      hour: 3600,
-      minute: 60,
-      second: 1
-    }
-    const rtf = new Intl.RelativeTimeFormat()
-    const getSecondsDiff = timestamp => (Date.now() - timestamp) / 1000
-    const getUnitAndValueDate = secondsElapsed => {
-      for (const [unit, secondsInUnit] of Object.entries(DATE_UNITS)) {
-        if (secondsElapsed >= secondsInUnit || unit === 'second') {
-          const value = Math.floor(secondsElapsed / secondsInUnit) * -1
-          return { value, unit }
-        }
-      }
-    }
-
-    const secondsElapsed = getSecondsDiff(timestamp)
-    const { value, unit } = getUnitAndValueDate(secondsElapsed)
-
-    return rtf.format(value, unit)
-  }
 
   const timeago = getTimeAgo(timestamp)
   const [sender, sentByLocalUser] = getUserName(message.postedByUser)
 
   const senderAndTime = `${sender}, ${timeago}`
 
-  function getUserName(sentBy) {
-    const sender = currentConversation.users.find(user => user._id === sentBy) ?? localUser
+  function getUserName() {
+    const sentByLocalUser = message.postedByUser === localUser._id
 
-    const sentByLocalUser = sender._id === localUser._id
+    const sender = sentByLocalUser ? localUser : currentConversation.users.find(user => user._id !== localUser._id)
 
     return [sentByLocalUser ? 'Me' : `${sender.firstName} ${sender.lastName}`, sentByLocalUser]
   }
@@ -105,9 +83,39 @@ const Message = forwardRef(({ message }, ref) => {
     })
   }
 
+  const isFirstUnreadMessage = useMemo(() => {
+    return firstUnreadMessage?._id === message?._id
+  }, [currentConversation])
+
+  const isLastMessage = useMemo(() => {
+    return lastMessage?._id === message?._id
+  }, [currentConversation])
+
+  useEffect(() => {
+    let timeout = null
+    if (isFirstUnreadMessage) {
+      messageRef.current.scrollIntoView({
+        block: 'center'
+      })
+
+      timeout = setTimeout(() => {
+        markAsRead(message.chatRoomId)
+      }, 6000)
+    } else if (isLastMessage && !firstUnreadMessage) {
+      messageRef.current.scrollIntoView({
+        block: 'center'
+      })
+    }
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [])
+
   return (
     <>
-      <li ref={ref || currentMessageRef} onContextMenu={handleRightClick} className={styles.messageContainer}>
+      {isFirstUnreadMessage && <UnreadMessagesSeparator />}
+      <li ref={messageRef} onContextMenu={handleRightClick} className={styles.messageContainer}>
         <MessageTimeAndSender senderAndTime={senderAndTime} sentByLocalUser={sentByLocalUser} />
         <div aria-selected={activeMessage} className={styles.messageActionsContainer}>
           {activeMessage && activeMessage._id === message._id && deleteMessageControl && (
@@ -137,7 +145,7 @@ const Message = forwardRef(({ message }, ref) => {
       {isDeleteModalOpen && (
         <Modal
           title="Delet message"
-          subtitle={'This action is not reversible'}
+          subtitle="This action is not reversible"
           onSuccess={handleDeleteModalSuccess}
           onCancel={() => setIsDeleteModalOpen(false)}
           onClose={() => setIsDeleteModalOpen(false)}
@@ -147,8 +155,4 @@ const Message = forwardRef(({ message }, ref) => {
       )}
     </>
   )
-})
-
-Message.displayName = 'Message'
-
-export default Message
+}

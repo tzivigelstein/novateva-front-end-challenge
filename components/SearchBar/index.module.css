@@ -20,3 +20,34 @@
   padding: 0.7rem;
   background: transparent;
 }
+
+.resultsList {
+  display: grid;
+  gap: 0.5rem;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 2px 2px 5px rgb(62 65 63 / 16);
+  padding: 0.5rem;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.listItem {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--primary-border-color);
+  cursor: pointer;
+  color: var(--primary-text-color);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userIndex {
+  font-size: 13px;
+}

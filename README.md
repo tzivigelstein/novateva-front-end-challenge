@@ -1,5 +1,9 @@
 # Novateva front end challenge [![wakatime](https://wakatime.com/badge/user/b9d25ba3-da9c-44da-9a0b-bd8bb81c6074/project/ab4cad2c-ffe2-4011-9b32-78503a9f3547.svg)](https://wakatime.com/badge/user/b9d25ba3-da9c-44da-9a0b-bd8bb81c6074/project/ab4cad2c-ffe2-4011-9b32-78503a9f3547)
 
+### Prerequisites
+
+- [`node js`](https://nodejs.org/en/) (`>= 12.22.0`)
+
 ## Getting Started
 
 First, install the dependencies:

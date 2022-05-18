@@ -10,7 +10,6 @@ export default function SearchBar() {
   const debounced = useMemo(() => debounce(handleSearch, SEARCH_AFTER_500_MS), [])
   const [search, setSearch] = useState('')
   const [filteredUsers, setFilteredUsers] = useState([])
-  const [isBlured, setIsBlured] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
 
   function handleSearch({ value }) {
@@ -50,12 +49,10 @@ export default function SearchBar() {
 
   function handleBlur() {
     setIsFocused(false)
-    setIsBlured(true)
   }
 
   function handleFocus() {
     setIsFocused(true)
-    setIsBlured(false)
   }
 
   return (

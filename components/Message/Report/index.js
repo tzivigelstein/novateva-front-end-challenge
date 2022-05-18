@@ -14,7 +14,7 @@ export default function Report({ image, sender, senderAndTime }) {
 
   function handleReportOption(value) {
     setSelectedReportOption(value)
-    const description = `I ${localUser.firstName} ${localUser.lastName} ${DESCRIPTION_PARTS[0]} ${sender} ${selectedReportOption} ${DESCRIPTION_PARTS[1]}`
+    const description = `I ${localUser.firstName} ${localUser.lastName} ${DESCRIPTION_PARTS[0]} ${sender} ${value} ${DESCRIPTION_PARTS[1]}`
     updateReportDescription(description)
   }
 

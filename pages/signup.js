@@ -12,6 +12,7 @@ export default function Signup() {
   const router = useRouter()
   const { signup, postSignupLogin } = useAuth()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const {
     register,
@@ -51,6 +52,7 @@ export default function Signup() {
       })
       .catch(error => {
         console.error(error)
+        setError(error.response.data.message)
       })
   }
 
@@ -61,6 +63,7 @@ export default function Signup() {
       </Head>
       <main className={styles.container}>
         <h1>Signup</h1>
+        {error && error}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <fieldset className={`${styles.fieldset} ${styles.horizontalFieldset}`}>
             <div className={styles.inputContainer}>

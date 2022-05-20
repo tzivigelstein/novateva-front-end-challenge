@@ -42,9 +42,15 @@ export default function Message({ message, firstUnreadMessage, lastMessage }) {
   function getUserName() {
     const sentByLocalUser = message.postedByUser === localUser._id
 
-    const sender = sentByLocalUser ? localUser : currentConversation.users.find(user => user._id !== localUser._id)
+    let sender = sentByLocalUser ? localUser : currentConversation.users.find(user => user._id !== localUser._id)
 
-    return [sentByLocalUser ? 'Me' : `${sender.firstName} ${sender.lastName}`, sentByLocalUser]
+    if (!sender && !sentByLocalUser) {
+      sender = {}
+      sender.firstName = 'Delete'
+      sender.lastName = 'User'
+    }
+
+    return [sentByLocalUser ? 'Me' : `${sender?.firstName} ${sender?.lastName}`, sentByLocalUser]
   }
 
   function handleRightClick(e) {

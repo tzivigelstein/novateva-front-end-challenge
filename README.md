@@ -81,3 +81,53 @@ A user can also create a `report` over an inadequate message. This report will b
 - Mark as read process\
   The `mark as read` process needs to make a `request` to the `server` to mark the whole conversation as `read`. This is not ideal because there is a desynchronization between the read messages and the incoming messages via `Socket.io`.
   The ideal solution to this is to create a server-side socket event, where the `server` will listen to the socket event and then mark the conversation or a single as `read` when the event is received.
+  I came up with a solution that works, but it is not ideal. The client should keep track of the current conversation as something close to a `cache` that is updated when a new message is received and marks it as read. Then the conversation should listen to its changes and mark itself as read when it differs from the last one. Also, the conversation should set an event listener that listens to the `"beforeunload"` event in order to mark as read the conversation when the user leaves the chat. These events should only be triggered if the user is currently in the conversation.
+
+  The "beforeunload" event looks like this:
+
+  ```js
+  useEffect(() => {
+    // Keep track of the current conversation id
+    let currentConversationId = currentConversation?._id
+
+    window.addEventListener('beforeunload', function markAsRead() {
+      const url = `/room/${currentConversationId}/mark-as-read`
+
+      axiosClient.post(url)
+
+      this.removeEventListener('beforeunload', markAsRead)
+    })
+  }, [])
+  ```
+
+  The `conversation cache` looks like this:
+
+  ```js
+  // This state handles the current conversation
+  const [conversation, setConversation] = useState(null)
+
+  socket.on('new message', ({ message }) => {
+    setConversation(prev => {
+      if (prev && prev._id === message.chatRoomId) {
+        const newReadByRecipients = [...message.readByRecipients]
+        newReadByRecipients.push({ readByUserId: localUser._id })
+
+        const newMessage = {
+          ...message,
+          readByRecipients: [...newReadByRecipients]
+        }
+
+        return {
+          ...prev,
+          messages: [...prev.messages, message]
+        }
+      }
+
+      return prev
+    })
+  })
+  ```
+
+Then depending on the business logic, we can mark as read the messages under different conditions.
+Either when the user reaches the bottom or even when the user joins the conversation.
+Whichever is the case, this is a solution that works, but it is not great.

@@ -4,3 +4,8 @@
   color: var(--primary-text-color);
   text-transform: capitalize;
 }
+
+.userId {
+  margin-left: 1ch;
+  color: rgba(0, 0, 0, 0.3);
+}

@@ -87,7 +87,7 @@ A user can also create a `report` over an inadequate message. This report will b
   ### Frontend
 
   ```js
-  // url: Novateva's API
+  // url: Next app integrated API route
   // data: Blob containing the room id and the users token.
   navigator.sendBeacon(url, data) // -> Goes to the Next API
   ```

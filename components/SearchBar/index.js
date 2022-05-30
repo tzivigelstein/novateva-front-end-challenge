@@ -58,7 +58,7 @@ export default function SearchBar() {
   return (
     <div style={{ position: 'relative' }}>
       <div className={styles.inputContainer}>
-        <label htmlFor="search">
+        <label className={styles.searchIconLabel} htmlFor="search">
           <Search />
         </label>
         <input

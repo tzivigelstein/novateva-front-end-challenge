@@ -12,6 +12,10 @@
   border-color: #000;
 }
 
+.searchIconLabel {
+  display: flex;
+}
+
 .input {
   border: none;
   outline: none;

@@ -12,7 +12,7 @@ export default function UserItem({ user }) {
   return (
     <li className={styles.userItem}>
       <button aria-selected={isSelected} className={styles.userItemButton} onClick={() => setSelectedUser(userId)}>
-        <UserInfo user={user} bold={true} />
+        <UserInfo user={user} bold={true} showId={true} />
         <div className={styles.userSelectButton}>
           {isSelected ? (
             <Check className={styles.userSelectedButtonIcon} />

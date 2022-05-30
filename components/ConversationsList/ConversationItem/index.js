@@ -59,7 +59,12 @@ export default function ConversationItem({ chat }) {
           onClick={() => setCurrentConversationId(chat._id)}
           className={styles.conversationItem}
         >
-          <UserInfo user={chat.users.find(user => user._id !== localUser._id)} status={true} bold={true} />
+          <UserInfo
+            user={chat.users.find(user => user._id !== localUser._id)}
+            status={true}
+            bold={true}
+            showId={true}
+          />
           {count > 0 && activeConversation?._id !== chat._id && <NotificationsCount number={count} />}
           {activeConversation && activeConversation._id === chat._id && (
             // role assigned to avoid: "Button cannot appear as a descendant of button"

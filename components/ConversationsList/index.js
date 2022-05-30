@@ -41,7 +41,7 @@ export default function ConversationsList() {
       <aside className={styles.aside}>
         <div className={styles.chatsContainer}>
           <header className={styles.chatAsideHeader}>
-            <UserInfo user={localUser} status={true} bold={true} />
+            <UserInfo user={localUser} status={true} bold={true} showId={true} />
           </header>
           {!loading && chats.length > 0 ? (
             <ul className={styles.chatsList}>

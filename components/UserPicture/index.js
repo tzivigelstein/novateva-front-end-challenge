@@ -12,7 +12,11 @@ export default function UserPicture({ user, status }) {
 
   return (
     <div className={styles.pictureContainer}>
-      <picture style={{ backgroundColor: userColor || '#FFF' }} className={styles.picture}>
+      <picture
+        data-testid="user-profile-picture"
+        style={{ backgroundColor: userColor || '#FFF' }}
+        className={styles.picture}
+      >
         <User stroke="#fff" />
       </picture>
       {status && <span className={styles.status}></span>}

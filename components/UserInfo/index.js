@@ -12,7 +12,11 @@ export default function UserInfo({ user, bold, status, showId }) {
           name={`${user?.firstName ?? 'Deleted'} ${user?.lastName ?? 'user'}`}
           id={showId ? user?._id : null}
         />
-        {status && <span className={styles.status}>Online</span>}
+        {status && (
+          <span data-testid="user-status" className={styles.status}>
+            Online
+          </span>
+        )}
       </div>
     </div>
   )

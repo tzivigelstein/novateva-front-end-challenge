@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest",
+    "test-watch": "jest --watchAll",
+    "test-coverage": "jest --coverage",
+    "test-suite": "jest --watchAll --coverage"
   },
   "dependencies": {
     "@uiball/loaders": "^1.2.6",
@@ -22,7 +26,11 @@
     "use-react-screenshot": "^3.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "5.16.4",
+    "@testing-library/react": "12.1.5",
     "eslint": "8.15.0",
-    "eslint-config-next": "12.1.6"
+    "eslint-config-next": "12.1.6",
+    "jest": "^28.0.1",
+    "jest-environment-jsdom": "^28.0.1"
   }
 }

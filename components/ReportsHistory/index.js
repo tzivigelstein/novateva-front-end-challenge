@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './index.module.css'
 import ActivityIndicator from '../ActivityIndicator'
 import useApp from '../../hooks/useApp'
-import Report from './ReportItem'
+import ReportItem from './ReportItem'
 
 export default function ReportsHistory() {
   const [loading, setLoading] = useState(false)
@@ -19,7 +19,7 @@ export default function ReportsHistory() {
       {!loading && reports.length > 0 && (
         <ul className={styles.reports}>
           {reports.map(report => (
-            <Report key={report._id} report={report} />
+            <ReportItem key={report._id} report={report} />
           ))}
         </ul>
       )}

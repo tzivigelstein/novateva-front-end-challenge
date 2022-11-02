@@ -4,7 +4,7 @@ import { Trash } from '../../Icons'
 export default function DeleteMessageButton({ handleDeleteMessage }) {
   return (
     <button onClick={handleDeleteMessage} className={styles.deleteMessageButton}>
-      <Trash className={styles.trashIcon} />
+      <Trash data-testid="trash-icon" className={styles.trashIcon} />
       Delete
     </button>
   )

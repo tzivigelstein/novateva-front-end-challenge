@@ -1,6 +1,6 @@
 import styles from './index.module.css'
 
-export default function Report({ report }) {
+export default function ReportItem({ report }) {
   const reportDate = new Date(report.createdAt).toLocaleDateString()
 
   return (

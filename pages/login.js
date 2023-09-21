@@ -8,9 +8,9 @@ import styles from "../styles/login.module.css"
 import InputLabel from "../components/InputLabel"
 import InputHelper from "../components/InputHelper"
 
-const DEFAULT_ERROR = {
-  code: "",
-  message: ""
+export const DEFAULT_ERROR = {
+  code: null,
+  message: null
 }
 
 export default function Login() {
@@ -49,8 +49,6 @@ export default function Login() {
       .finally(() => setLoading(false))
   }
 
-  console.log(error)
-
   return (
     <>
       <Head>
@@ -58,9 +56,7 @@ export default function Login() {
       </Head>
       <main className={styles.container}>
         <h1>Login</h1>
-        {typeof error.code !== "null" && (
-          <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>
-        )}
+        {error.code !== null && <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <fieldset className={styles.fieldset}>
             <div className={styles.inputContainer}>

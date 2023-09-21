@@ -7,12 +7,13 @@ import Head from "next/head"
 import styles from "../styles/signup.module.css"
 import InputLabel from "../components/InputLabel"
 import InputHelper from "../components/InputHelper"
+import {DEFAULT_ERROR} from "./login"
 
 export default function Signup() {
   const router = useRouter()
   const {signup, postSignupLogin} = useAuth()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(DEFAULT_ERROR)
 
   const {
     register,
@@ -65,7 +66,7 @@ export default function Signup() {
       </Head>
       <main className={styles.container}>
         <h1>Signup</h1>
-        {typeof error !== "null" && <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>}
+        {error.code !== null && <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <fieldset className={`${styles.fieldset} ${styles.horizontalFieldset}`}>
             <div className={styles.inputContainer}>

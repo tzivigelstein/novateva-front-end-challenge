@@ -49,54 +49,52 @@ export default function Login() {
       .finally(() => setLoading(false))
   }
 
-  return (
-    <>
-      <Head>
-        <title>Login</title>
-      </Head>
-      <main className={styles.container}>
-        <h1>Login</h1>
-        {error.code !== null && <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>}
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <fieldset className={styles.fieldset}>
-            <div className={styles.inputContainer}>
-              <InputLabel id="email" text="Email" />
-              <input
-                className={styles.input}
-                {...register("email", {
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
-                })}
-                type="email"
-                placeholder="Email"
-              />
-              <InputHelper>{errors.email?.type === "required" && "Email is required"}</InputHelper>
-            </div>
-            <div className={styles.inputContainer}>
-              <InputLabel id="password" text="Password" />
-              <input
-                className={styles.input}
-                {...register("password", {
-                  required: true,
-                  minLength: 6,
-                  maxLength: 20
-                })}
-                type="password"
-                placeholder="Password"
-              />
-              <InputHelper>
-                {errors.password?.type === "required" && "Password is required"}
-                {errors.password?.type === "minLength" && "Password must be longer than 6 characters"}
-                {errors.password?.type === "maxLength" && "Password must be shorter than 20 characters"}
-              </InputHelper>
-            </div>
-          </fieldset>
-          <input className={styles.submit} type="submit" value="Login" disabled={loading} />
-        </form>
-        <Link href="/signup">
-          <a className={styles.helperLink}>Do not have an account yet? Signup</a>
-        </Link>
-      </main>
-    </>
-  )
+  return <>
+    <Head>
+      <title>Login</title>
+    </Head>
+    <main className={styles.container}>
+      <h1>Login</h1>
+      {error.code !== null && <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>}
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className={styles.fieldset}>
+          <div className={styles.inputContainer}>
+            <InputLabel id="email" text="Email" />
+            <input
+              className={styles.input}
+              {...register("email", {
+                required: true,
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+              })}
+              type="email"
+              placeholder="Email"
+            />
+            <InputHelper>{errors.email?.type === "required" && "Email is required"}</InputHelper>
+          </div>
+          <div className={styles.inputContainer}>
+            <InputLabel id="password" text="Password" />
+            <input
+              className={styles.input}
+              {...register("password", {
+                required: true,
+                minLength: 6,
+                maxLength: 20
+              })}
+              type="password"
+              placeholder="Password"
+            />
+            <InputHelper>
+              {errors.password?.type === "required" && "Password is required"}
+              {errors.password?.type === "minLength" && "Password must be longer than 6 characters"}
+              {errors.password?.type === "maxLength" && "Password must be shorter than 20 characters"}
+            </InputHelper>
+          </div>
+        </fieldset>
+        <input className={styles.submit} type="submit" value="Login" disabled={loading} />
+      </form>
+      <Link href="/signup" className={styles.helperLink}>
+        Do not have an account yet? Signup
+      </Link>
+    </main>
+  </>;
 }

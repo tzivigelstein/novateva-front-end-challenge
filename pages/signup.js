@@ -33,7 +33,7 @@ export default function Signup() {
         const userData = {
           email: newUser.email,
           password: newUser.password,
-          _id: res.data.user._id,
+          _id: res.data.user.id,
           firstName: res.data.user.firstName,
           lastName: res.data.user.lastName
         }

@@ -19,7 +19,7 @@ export default function ReportsHistory() {
       {!loading && reports.length > 0 && (
         <ul className={styles.reports}>
           {reports.map(report => (
-            <ReportItem key={report._id} report={report} />
+            <ReportItem key={report.id} report={report} />
           ))}
         </ul>
       )}

@@ -4,14 +4,14 @@ import stc from 'string-to-color'
 
 describe('User Info', () => {
   const user = {
-    _id: '5f4b8a9b9c7d4d0017d8b0c1',
+    id: '5f4b8a9b9c7d4d0017d8b0c1',
     firstName: 'John',
     lastName: 'Doe',
     email: 'testing@novateva.com'
   }
 
   test("Should have user picture, user's name, and user's last name", () => {
-    const userColor = stc(user._id)
+    const userColor = stc(user.id)
 
     const component = render(<UserInfo user={user} />)
 
@@ -23,10 +23,10 @@ describe('User Info', () => {
   })
 
   test("Should have deafult user picture and name equals to 'deleted user'", () => {
-    const DEFAULT_USER_ID = 'DEFAULT'
+    const DEFAULT_USERid = 'DEFAULT'
     const EMPTY_USER = {}
 
-    const userColor = stc(DEFAULT_USER_ID)
+    const userColor = stc(DEFAULT_USERid)
 
     const component = render(<UserInfo user={EMPTY_USER} />)
 
@@ -57,6 +57,6 @@ describe('User Info', () => {
 
     const userId = component.getByTestId('user-id')
     expect(userId).toBeInTheDocument()
-    expect(userId).toHaveTextContent(`#${user._id.slice(0, 4)}`)
+    expect(userId).toHaveTextContent(`#${user.id.slice(0, 4)}`)
   })
 })

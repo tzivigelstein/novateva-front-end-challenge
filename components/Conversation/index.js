@@ -28,13 +28,13 @@ export default function Conversation() {
   const firstUnreadMessage = useMemo(() => {
     return currentConversation?.messages?.find(message => {
       const flatRecipients = message.readByRecipients.map(recipient => recipient.readByUserId)
-      return !flatRecipients.includes(localUser._id)
+      return !flatRecipients.includes(localUser.id)
     })
   }, [currentConversation])
 
   const lastMessage = useMemo(() => {
     return currentConversation?.messages?.find((message, _, messages) => {
-      return message._id === messages[messages.length - 1]._id
+      return message.id === messages[messages.length - 1].id
     })
   }, [currentConversation])
 
@@ -45,7 +45,7 @@ export default function Conversation() {
           <ul className={styles.messagesContainer}>
             {currentConversation?.messages?.map(item => (
               <Message
-                key={item._id}
+                key={item.id}
                 message={item}
                 firstUnreadMessage={firstUnreadMessage}
                 lastMessage={lastMessage}

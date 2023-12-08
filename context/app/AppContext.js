@@ -38,7 +38,7 @@ export default function AppProvider({ children }) {
 
     socket.on('new message', function ({ message }) {
       setCurrentConversation(prev => {
-        if (prev?._id === message.chatRoomId) {
+        if (prev?.id === message.chatRoomId) {
           return { ...prev, messages: [...prev.messages, message] }
         } else {
           return prev
@@ -47,7 +47,7 @@ export default function AppProvider({ children }) {
 
       setChats(prev => {
         return prev.map(chat => {
-          if (chat._id === message.chatRoomId) {
+          if (chat.id === message.chatRoomId) {
             return { ...chat, messages: [...chat.messages, message] }
           }
 
@@ -69,7 +69,7 @@ export default function AppProvider({ children }) {
       setCurrentConversation(newConversation)
       setChats(prev =>
         prev.map(chat => {
-          if (chat._id === id) {
+          if (chat.id === id) {
             return { ...newConversation }
           }
 
@@ -85,12 +85,12 @@ export default function AppProvider({ children }) {
     const newMessages = messages.map(message => {
       const flatReadByRecipients = message.readByRecipients.map(({ readByUserId }) => readByUserId)
 
-      const messageNotRead = !flatReadByRecipients.includes(localUser._id)
+      const messageNotRead = !flatReadByRecipients.includes(localUser.id)
 
       const newReadByRecipients = [...message.readByRecipients]
 
       if (messageNotRead) {
-        newReadByRecipients.push({ readByUserId: localUser._id })
+        newReadByRecipients.push({ readByUserId: localUser.id })
       }
 
       return {
@@ -110,7 +110,8 @@ export default function AppProvider({ children }) {
   async function getAllUsers() {
     return axiosClient.get('/users').then(data => {
       const { users } = data.data
-      setAllUsers(() => users.filter(user => user._id !== localUser._id))
+      console.log({users})
+      setAllUsers(() => users.filter(user => user.id !== localUser.id))
 
       return data
     })
@@ -127,11 +128,11 @@ export default function AppProvider({ children }) {
 
   async function deleteMessage(id) {
     return axiosClient.delete(`/delete/message/${id}`).then(() => {
-      setCurrentConversation(prev => ({ ...prev, messages: prev.messages.filter(message => message._id !== id) }))
+      setCurrentConversation(prev => ({ ...prev, messages: prev.messages.filter(message => message.id !== id) }))
       setChats(prev =>
         prev.map(chat => {
-          if (chat._id === currentConversation._id) {
-            return { ...chat, messages: chat.messages.filter(message => message._id !== id) }
+          if (chat.id === currentConversation.id) {
+            return { ...chat, messages: chat.messages.filter(message => message.id !== id) }
           }
 
           return chat
@@ -141,11 +142,11 @@ export default function AppProvider({ children }) {
   }
 
   function setCurrentConversationId(id) {
-    setCurrentConversation(() => chats.find(chat => chat._id === id))
+    setCurrentConversation(() => chats.find(chat => chat.id === id))
   }
 
   async function postMessage(message) {
-    return axiosClient.post(`/room/${currentConversation._id}/message`, message)
+    return axiosClient.post(`/room/${currentConversation.id}/message`, message)
   }
 
   async function getRoomMessages(room) {
@@ -189,7 +190,7 @@ export default function AppProvider({ children }) {
     if (typeof chat === 'undefined') return 0
 
     const count = chat?.messages?.reduce((acc, message) => {
-      if (!message.readByRecipients.find(recipient => recipient.readByUserId === localUser._id)) {
+      if (!message.readByRecipients.find(recipient => recipient.readByUserId === localUser.id)) {
         return acc + 1
       }
 
@@ -211,9 +212,9 @@ export default function AppProvider({ children }) {
 
   async function deleteConversation(id) {
     return axiosClient.delete(`/delete/room/${id}`).then(() => {
-      setChats(prev => prev.filter(chat => chat._id !== id))
+      setChats(prev => prev.filter(chat => chat.id !== id))
       setCurrentConversation(prev => {
-        if (prev && prev._id === id) {
+        if (prev && prev.id === id) {
           return null
         }
 

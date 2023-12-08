@@ -40,9 +40,9 @@ export default function Message({ message, firstUnreadMessage, lastMessage }) {
   const senderAndTime = `${sender}, ${timeago}`
 
   function getUserName() {
-    const sentByLocalUser = message.postedByUser === localUser._id
+    const sentByLocalUser = message.postedByUser === localUser.id
 
-    let sender = sentByLocalUser ? localUser : currentConversation.users.find(user => user._id !== localUser._id)
+    let sender = sentByLocalUser ? localUser : currentConversation.users.find(user => user.id !== localUser.id)
 
     if (!sender && !sentByLocalUser) {
       sender = {}
@@ -70,7 +70,7 @@ export default function Message({ message, firstUnreadMessage, lastMessage }) {
 
   function handleDeleteModalSuccess() {
     setIsDeleteModalOpen(false)
-    deleteMessage(message._id)
+    deleteMessage(message.id)
   }
 
   function handleReportMessage() {
@@ -90,11 +90,11 @@ export default function Message({ message, firstUnreadMessage, lastMessage }) {
   }
 
   const isFirstUnreadMessage = useMemo(() => {
-    return firstUnreadMessage?._id === message?._id
+    return firstUnreadMessage?.id === message?.id
   }, [currentConversation])
 
   const isLastMessage = useMemo(() => {
-    return lastMessage?._id === message?._id
+    return lastMessage?.id === message?.id
   }, [currentConversation])
 
   useEffect(() => {
@@ -124,13 +124,13 @@ export default function Message({ message, firstUnreadMessage, lastMessage }) {
       <li ref={messageRef} onContextMenu={handleRightClick} className={styles.messageContainer}>
         <MessageTimeAndSender senderAndTime={senderAndTime} sentByLocalUser={sentByLocalUser} />
         <div aria-selected={activeMessage} className={styles.messageActionsContainer}>
-          {activeMessage && activeMessage._id === message._id && deleteMessageControl && (
+          {activeMessage && activeMessage.id === message.id && deleteMessageControl && (
             <DeleteMessageButton handleDeleteMessage={handleDeleteMessage} />
           )}
           <div style={sentByLocalUser ? { marginLeft: 'auto' } : {}} className={styles.message}>
             <p className={styles.messageText}>{messageText}</p>
           </div>
-          {activeMessage && activeMessage._id === message._id && reportMessageControl && (
+          {activeMessage && activeMessage.id === message.id && reportMessageControl && (
             <ReportMessageButton handleReportMessage={handleReportMessage} />
           )}
         </div>

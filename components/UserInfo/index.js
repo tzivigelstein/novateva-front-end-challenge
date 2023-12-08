@@ -10,7 +10,7 @@ export default function UserInfo({ user, bold, status, showId }) {
         <UserName
           bold={bold}
           name={`${user?.firstName ?? 'Deleted'} ${user?.lastName ?? 'user'}`}
-          id={showId ? user?._id : null}
+          id={showId ? user?.id : null}
         />
         {status && (
           <span data-testid="user-status" className={styles.status}>

@@ -22,7 +22,7 @@ export default function ConversationItem({ chat }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
-    const socket = connectToSocket(chat._id)
+    const socket = connectToSocket(chat.id)
 
     return () => socket.close()
   }, [])
@@ -42,7 +42,7 @@ export default function ConversationItem({ chat }) {
 
   function handleDeleteConversationSuccess() {
     updateActiveConversation(null)
-    deleteConversation(chat._id)
+    deleteConversation(chat.id)
     setIsModalOpen(false)
   }
 
@@ -53,20 +53,20 @@ export default function ConversationItem({ chat }) {
 
   return (
     <>
-      <li key={chat._id}>
+      <li key={chat.id}>
         <button
           onContextMenu={updateActiveConversationItem}
-          onClick={() => setCurrentConversationId(chat._id)}
+          onClick={() => setCurrentConversationId(chat.id)}
           className={styles.conversationItem}
         >
           <UserInfo
-            user={chat.users.find(user => user._id !== localUser._id)}
+            user={chat.users.find(user => user.id !== localUser.id)}
             status={true}
             bold={true}
             showId={true}
           />
-          {count > 0 && activeConversation?._id !== chat._id && <NotificationsCount number={count} />}
-          {activeConversation && activeConversation._id === chat._id && (
+          {count > 0 && activeConversation?.id !== chat.id && <NotificationsCount number={count} />}
+          {activeConversation && activeConversation.id === chat.id && (
             // role assigned to avoid: "Button cannot appear as a descendant of button"
             <div onClick={handleDeleteConversation} role="button" className={styles.deleteConversationButton} value="">
               <Trash />

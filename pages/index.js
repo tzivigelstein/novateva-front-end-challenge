@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Chat</title>
+        <title>Chats</title>
       </Head>
 
       <main className={styles.main}>

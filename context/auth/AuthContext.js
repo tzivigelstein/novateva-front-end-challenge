@@ -45,7 +45,7 @@ export default function AuthProvider({ children }) {
         email: userData.email,
         firstName: userData.firstName,
         lastName: userData.lastName,
-        _id: userData._id
+        id: userData.id
       }
 
       window.localStorage.setItem('token', token)

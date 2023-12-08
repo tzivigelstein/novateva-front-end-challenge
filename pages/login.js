@@ -61,6 +61,7 @@ export default function Login() {
           <div className={styles.inputContainer}>
             <InputLabel id="email" text="Email" />
             <input
+              id="email"
               className={styles.input}
               {...register("email", {
                 required: true,
@@ -74,6 +75,7 @@ export default function Login() {
           <div className={styles.inputContainer}>
             <InputLabel id="password" text="Password" />
             <input
+              id="password"
               className={styles.input}
               {...register("password", {
                 required: true,

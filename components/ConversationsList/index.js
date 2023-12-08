@@ -26,7 +26,7 @@ export default function ConversationsList() {
   async function onModalSuccess() {
     setIsModalOpen(false)
     setSelectedUser(null)
-    await createNewChat([localUser._id, selectedUserId])
+    await createNewChat([localUser.id, selectedUserId])
 
     await getAllChats()
   }
@@ -45,7 +45,7 @@ export default function ConversationsList() {
           </header>
           {!loading && chats.length > 0 ? (
             <ul className={styles.chatsList}>
-              {chats.length > 0 && chats.map(chat => <ConversationItem key={chat._id} chat={chat} />)}
+              {chats.length > 0 && chats.map(chat => <ConversationItem key={chat.id} chat={chat} />)}
             </ul>
           ) : (
             <div className={styles.noChatsContainer}>
@@ -62,7 +62,7 @@ export default function ConversationsList() {
       {isModalOpen && (
         <Modal
           title="Create a new chat"
-          subtitle="Start a conversation with somebody below"
+          subtitle="Start a conversation with somebody"
           body={<ModalUsersList />}
           onSuccess={onModalSuccess}
           onCancel={onCancelOrCloseModal}

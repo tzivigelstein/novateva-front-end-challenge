@@ -73,8 +73,8 @@ export default function SearchBar() {
       </div>
       {filteredUsers.length > 0 && isFocused && (
         <ul className={styles.resultsList}>
-          {filteredUsers.map(({ firstName, lastName, _id }, index) => (
-            <li className={styles.listItem} key={_id}>
+          {filteredUsers.map(({ firstName, lastName, id }, index) => (
+            <li className={styles.listItem} key={id}>
               <span className={styles.userIndex}>{index + 1}</span> {firstName} {lastName}
             </li>
           ))}

@@ -5,7 +5,7 @@ import styles from './index.module.css'
 
 export default function UserItem({ user }) {
   const { selectedUserId, setSelectedUser } = useApp()
-  const { _id: userId } = user
+  const { id: userId } = user
 
   const isSelected = selectedUserId === userId
 

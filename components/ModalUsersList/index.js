@@ -18,7 +18,7 @@ export default function ModalUsersList() {
       {users.length > 0 ? (
         <ul className={styles.usersList}>
           {users.map(user => (
-            <UserItem key={user._id} user={user} />
+            <UserItem key={user.id} user={user} />
           ))}
         </ul>
       ) : (

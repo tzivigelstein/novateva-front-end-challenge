@@ -1,9 +1,10 @@
-import {useRouter} from "next/router"
-import {useForm} from "react-hook-form"
-import useAuth from "../hooks/useAuth"
-import {useState} from "react"
-import Link from "next/link"
+import { useState } from "react"
 import Head from "next/head"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useForm } from "react-hook-form"
+
+import useAuth from "../hooks/useAuth"
 import styles from "../styles/login.module.css"
 import InputLabel from "../components/InputLabel"
 import InputHelper from "../components/InputHelper"
@@ -18,11 +19,11 @@ export default function Login() {
   const [error, setError] = useState(DEFAULT_ERROR)
   const [loading, setLoading] = useState(false)
 
-  const {login} = useAuth()
+  const { login } = useAuth()
   const {
     register,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm()
 
   const onSubmit = data => {
@@ -38,13 +39,18 @@ export default function Login() {
         }
       })
       .catch(error => {
-        console.error(error)
-        const newError = {
-          code: error.response.status,
-          message: "The user doesn't exist"
+        const WEB_SERVER_IS_DOWN = 521
+        const code = error.response?.status ?? WEB_SERVER_IS_DOWN
+        let message = "The user doesn't exist"
+
+        if (code === WEB_SERVER_IS_DOWN) {
+          message = "The server is currently unresponsive"
         }
 
-        setError(newError)
+        setError({
+          code,
+          message
+        })
       })
       .finally(() => setLoading(false))
   }
@@ -55,7 +61,7 @@ export default function Login() {
     </Head>
     <main className={styles.container}>
       <h1>Login</h1>
-      {error.code !== null && <p style={{color: "rgb(215,0,21)", fontWeight: "bold"}}>Error: {error.message}</p>}
+      {error.code !== null && <p style={{ color: "rgb(215,0,21)", fontWeight: "bold" }}>Error: {error.message}</p>}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <fieldset className={styles.fieldset}>
           <div className={styles.inputContainer}>

@@ -6,7 +6,7 @@ export default function UserName({ id, name, bold }) {
       {name}
       {id && (
         <span data-testid="user-id" className={styles.userId}>
-          #{id?.slice(0, 4)}
+          #{id}
         </span>
       )}
     </span>

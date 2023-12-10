@@ -110,7 +110,6 @@ export default function AppProvider({ children }) {
   async function getAllUsers() {
     return axiosClient.get('/users').then(data => {
       const { users } = data.data
-      console.log({users})
       setAllUsers(() => users.filter(user => user.id !== localUser.id))
 
       return data

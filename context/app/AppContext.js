@@ -36,9 +36,10 @@ export default function AppProvider({ children }) {
       console.info('Socket disconnected')
     })
 
-    socket.on('new message', function ({ message }) {
+    socket.on('new message', function ({ message, chatRoomId }) {
+      console.log(message)
       setCurrentConversation(prev => {
-        if (prev?.id === message.chatRoomId) {
+        if (prev?.id === chatRoomId) {
           return { ...prev, messages: [...prev.messages, message] }
         } else {
           return prev
@@ -47,7 +48,7 @@ export default function AppProvider({ children }) {
 
       setChats(prev => {
         return prev.map(chat => {
-          if (chat.id === message.chatRoomId) {
+          if (chat.id === chatRoomId) {
             return { ...chat, messages: [...chat.messages, message] }
           }
 
@@ -83,14 +84,14 @@ export default function AppProvider({ children }) {
     const { messages } = conversation
 
     const newMessages = messages.map(message => {
-      const flatReadByRecipients = message.readByRecipients.map(({ readByUserId }) => readByUserId)
+      const flatReadByRecipients = message.readByRecipients.map(({ id }) => id)
 
       const messageNotRead = !flatReadByRecipients.includes(localUser.id)
 
       const newReadByRecipients = [...message.readByRecipients]
 
       if (messageNotRead) {
-        newReadByRecipients.push({ readByUserId: localUser.id })
+        newReadByRecipients.push({ id: localUser.id })
       }
 
       return {
@@ -160,6 +161,18 @@ export default function AppProvider({ children }) {
   }
 
   async function createNewChat(participants) {
+
+    const participantsToValidate = participants.filter(user => user.id !== localUser.id);
+
+
+    const userHasChatWithParticipants = chats.find(chat =>
+      chat.users.every(user => participantsToValidate.includes(user.id))
+    );
+
+    if (userHasChatWithParticipants) {
+      return;
+    }
+
     return axiosClient
       .post('/room/initiate', { userIds: participants, type: 'consumer-to-consumer' })
       .catch(console.error)
@@ -189,11 +202,9 @@ export default function AppProvider({ children }) {
     if (typeof chat === 'undefined') return 0
 
     const count = chat?.messages?.reduce((acc, message) => {
-      if (!message.readByRecipients.find(recipient => recipient.readByUserId === localUser.id)) {
-        return acc + 1
-      }
+      const messageReadByLocalUser = message.readByRecipients.find(recipient => recipient.id === localUser.id)
 
-      return acc
+      return !messageReadByLocalUser ? acc + 1 : acc
     }, 0)
 
     return count

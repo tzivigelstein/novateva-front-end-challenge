@@ -29,9 +29,7 @@ export default function Message({ message, firstUnreadMessage, lastMessage }) {
     useMessages()
   const { currentConversation, activeMessage, setNewActiveMessage, deleteMessage, markAsRead } = useApp()
 
-  const { createdAt, message: post } = message
-  const { messageText } = post
-
+  const { createdAt, messageText } = message
   const timestamp = new Date(createdAt).getTime()
 
   const timeago = getTimeAgo(timestamp)

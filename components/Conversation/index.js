@@ -27,7 +27,7 @@ export default function Conversation() {
 
   const firstUnreadMessage = useMemo(() => {
     return currentConversation?.messages?.find(message => {
-      const flatRecipients = message.readByRecipients.map(recipient => recipient.readByUserId)
+      const flatRecipients = message.readByRecipients.map(recipient => recipient.id)
       return !flatRecipients.includes(localUser.id)
     })
   }, [currentConversation])
